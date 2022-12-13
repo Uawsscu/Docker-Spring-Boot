@@ -1,0 +1,16 @@
+
+CMD กลังจาก maven install 
+
+1. $ docker build . -t spring-boot-docker.jar
+2. $ docker run -p 9090:8080 spring-boot-docker.jar      -- "spring-boot-docker.jar" คือ REPOSITORY หรือ image_name
+3. http://localhost:9090/message    ทดสอบ
+4. $ docker image ls   ตรวจดู image                        
+	----- $ docker rmi 22d84a66cda4 ลบimage
+5. $ docker ps -s      ตรวจดู CONTAINER ที่รันอยู่
+6. $ docker rm -f 65a82c94c7ab     ลบ CONTAINER ตาม CONTAINER_ID
+
+CMD push image
+1. $ docker login
+2. $ docker images
+3. $ docker push uawsscu/spring-boot-docker.jar:latest
+4. docker images และตรวจสอบที่ https://hub.docker.com/repository

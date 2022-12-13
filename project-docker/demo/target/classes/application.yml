@@ -1,0 +1,8 @@
+server:
+  port: 8080
+  
+# Logging
+logging:
+  level:
+    org:
+      springframework: INFO

@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+    demo09:
+        image: log-test:latest
+        ports:
+          - 9090:8080
+        volumes:
+            - ./logs:/logs
