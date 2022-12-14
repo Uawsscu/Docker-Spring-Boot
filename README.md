@@ -1,7 +1,7 @@
 # Create a JAR file from a Maven project
    - maven clean
    - maven install 
-     result : image
+    (build the images)
 
 # DockerCompose ******
   - $docker-compose up

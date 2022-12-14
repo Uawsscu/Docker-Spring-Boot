@@ -1,7 +1,9 @@
 version: "3.7"
 services:
-    demo09:
-        image: demo-api/image:latest
+    demo-api:
+        image: demo-api/image
+        build:
+          context: .
         ports:
           - 9090:8080
         volumes:
