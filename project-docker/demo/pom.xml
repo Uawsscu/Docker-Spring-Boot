@@ -19,7 +19,10 @@
 		<java.version>1.8</java.version>
 		<log4j2.version>2.17.0</log4j2.version>
 		<spring.log4j2.version>2.6.1</spring.log4j2.version>
-		<project.build.finalName>${project.artifactId}</project.build.finalName>
+		<project.docker.imageName>${project.artifactId}</project.docker.imageName>
+		<project.docker.tag>myTag</project.docker.tag>
+		<project.docker.username>username</project.docker.username>
+		<project.docker.password>password</project.docker.password>
 	</properties>
 
 	<dependencies>
@@ -52,15 +55,15 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.build.finalName}</finalName>
+		<finalName>${project.docker.imageName}</finalName>
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		
-			<plugin>
+
+			<!-- <plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.4.13</version>
@@ -74,39 +77,24 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>${project.build.finalName}/image</repository>
+					<repository>${project.docker.username}/${project.docker.imageName}</repository>
+					<tag>${project.docker.tag}</tag>
 					<buildArgs>
-						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+						<JAR_FILE>${project.docker.imageName}.jar</JAR_FILE>
 					</buildArgs>
 				</configuration>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.0.0</version>
 				<groupId>org.codehaus.mojo</groupId>
 				<executions>
-					<!-- <execution>
-						<id>Build Containers</id>
-						<phase>package</phase>
-						<configuration>
-							<executable>docker-compose</executable>
-							<commandlineArgs>build</commandlineArgs>
-						</configuration>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-					</execution> -->
-					<!-- <execution>
-						<id>Test Configuration</id>
-						<phase>test</phase>
-						<configuration>
-							<executable>docker-compose</executable>
-							<commandlineArgs>config</commandlineArgs>
-						</configuration>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-					</execution> -->
+					<!-- <execution> <id>Build Containers</id> <phase>package</phase> <configuration> 
+						<executable>docker-compose</executable> <commandlineArgs>build</commandlineArgs> 
+						</configuration> <goals> <goal>exec</goal> </goals> </execution> -->
+					<!-- <execution> <id>Test Configuration</id> <phase>test</phase> <configuration> 
+						<executable>docker-compose</executable> <commandlineArgs>config</commandlineArgs> 
+						</configuration> <goals> <goal>exec</goal> </goals> </execution> -->
 					<execution>
 						<id>Run Containers</id>
 						<phase>integration-test</phase>
@@ -118,7 +106,44 @@
 							<goal>exec</goal>
 						</goals>
 					</execution>
-					<!-- <execution>
+
+					<!-- login to docker -->
+					<execution>
+						<id>docker-login</id>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>docker</executable>
+							<!-- <workingDirectory>${project.basedir}</workingDirectory> -->
+							<arguments>
+								<argument>login</argument>
+								<argument>-u</argument>
+								<argument>${project.docker.username}</argument>
+								<argument>-p</argument>
+								<argument>${project.docker.password}</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<!-- push the docker image to docker repository -->
+				<!-- 	<execution>
+						<id>docker-push</id>
+						<phase>package</phase>
+
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>docker</executable>
+							<workingDirectory>${project.basedir}</workingDirectory>
+							<arguments>
+								<argument>push</argument>
+								<argument>${project.docker.username}/${project.docker.imageName}:${project.docker.tag}</argument>
+							</arguments>
+						</configuration>
+					</execution> -->
+				<!-- 	<execution>
 						<id>Registry Login</id>
 						<phase>install</phase>
 						<configuration>
@@ -128,7 +153,7 @@
 						<goals>
 							<goal>exec</goal>
 						</goals>
-					</execution>
+					</execution> -->
 					<execution>
 						<id>Install Containers</id>
 						<phase>install</phase>
@@ -139,7 +164,7 @@
 						<goals>
 							<goal>exec</goal>
 						</goals>
-					</execution> -->
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
