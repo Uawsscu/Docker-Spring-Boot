@@ -62,45 +62,17 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
-			<!-- <plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.13</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<repository>${project.docker.username}/${project.docker.imageName}</repository>
-					<tag>${project.docker.tag}</tag>
-					<buildArgs>
-						<JAR_FILE>${project.docker.imageName}.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
-			</plugin> -->
 			<plugin>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.0.0</version>
 				<groupId>org.codehaus.mojo</groupId>
 				<executions>
-					<!-- <execution> <id>Build Containers</id> <phase>package</phase> <configuration> 
-						<executable>docker-compose</executable> <commandlineArgs>build</commandlineArgs> 
-						</configuration> <goals> <goal>exec</goal> </goals> </execution> -->
-					<!-- <execution> <id>Test Configuration</id> <phase>test</phase> <configuration> 
-						<executable>docker-compose</executable> <commandlineArgs>config</commandlineArgs> 
-						</configuration> <goals> <goal>exec</goal> </goals> </execution> -->
 					<execution>
 						<id>Run Containers</id>
 						<phase>integration-test</phase>
 						<configuration>
 							<executable>docker-compose</executable>
-							<commandlineArgs>up --detach</commandlineArgs>
+							<commandlineArgs>up --force-recreate --build -d</commandlineArgs>
 						</configuration>
 						<goals>
 							<goal>exec</goal>
@@ -116,7 +88,6 @@
 						</goals>
 						<configuration>
 							<executable>docker</executable>
-							<!-- <workingDirectory>${project.basedir}</workingDirectory> -->
 							<arguments>
 								<argument>login</argument>
 								<argument>-u</argument>
@@ -126,34 +97,6 @@
 							</arguments>
 						</configuration>
 					</execution>
-					<!-- push the docker image to docker repository -->
-				<!-- 	<execution>
-						<id>docker-push</id>
-						<phase>package</phase>
-
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>docker</executable>
-							<workingDirectory>${project.basedir}</workingDirectory>
-							<arguments>
-								<argument>push</argument>
-								<argument>${project.docker.username}/${project.docker.imageName}:${project.docker.tag}</argument>
-							</arguments>
-						</configuration>
-					</execution> -->
-				<!-- 	<execution>
-						<id>Registry Login</id>
-						<phase>install</phase>
-						<configuration>
-							<executable>docker</executable>
-							<commandlineArgs>login registry.gitlab.com</commandlineArgs>
-						</configuration>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-					</execution> -->
 					<execution>
 						<id>Install Containers</id>
 						<phase>install</phase>
