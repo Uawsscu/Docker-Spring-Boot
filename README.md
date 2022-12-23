@@ -80,4 +80,10 @@
   - $docker rmi 22d84a66cda4 (remove image)
   - $docker ps -s (check container)
   - $docker rm -f 65a82c94c7ab (remove container)
+  
+###### push image
+1. $ docker login
+2. $ docker images
+3. $ docker push {username}/spring-boot-docker.jar:latest
+4. check container :  https://hub.docker.com/repository
  
